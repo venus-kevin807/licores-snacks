@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <title>Vinoteca Premium | Bebidas & Snacks</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
@@ -39,13 +39,14 @@
 
         body {
             background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
+            overscroll-behavior: none;
         }
 
-        /* Animaciones */
+        /* Animaciones optimizadas para móvil */
         @keyframes slideInLeft {
             from {
                 opacity: 0;
-                transform: translateX(-50px);
+                transform: translateX(-30px);
             }
 
             to {
@@ -57,7 +58,7 @@
         @keyframes slideInRight {
             from {
                 opacity: 0;
-                transform: translateX(50px);
+                transform: translateX(30px);
             }
 
             to {
@@ -69,7 +70,7 @@
         @keyframes fadeInScale {
             from {
                 opacity: 0;
-                transform: scale(0.9);
+                transform: scale(0.95);
             }
 
             to {
@@ -78,50 +79,66 @@
             }
         }
 
-        @keyframes shimmer {
-
-            0%,
-            100% {
-                opacity: 0.3;
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
 
-            50% {
-                opacity: 0.6;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
         .animate-slide-in-left {
-            animation: slideInLeft 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+            animation: slideInLeft 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
         }
 
         .animate-slide-in-right {
-            animation: slideInRight 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+            animation: slideInRight 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
         }
 
         .animate-fade-in-scale {
-            animation: fadeInScale 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+            animation: fadeInScale 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
         }
 
+        .animate-slide-up {
+            animation: slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+
+        /* Cards optimizadas para móvil */
         .card-hover {
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(139, 38, 53, 0.3);
+        @media (hover: hover) {
+            .card-hover:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 12px 24px rgba(139, 38, 53, 0.3);
+            }
+        }
+
+        /* Touch feedback para móvil */
+        .card-hover:active {
+            transform: scale(0.98);
         }
 
         .btn-primary {
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(201, 169, 97, 0.4);
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn-primary:active {
-            transform: scale(0.98);
+            transform: scale(0.96);
+        }
+
+        @media (hover: hover) {
+            .btn-primary:hover {
+                transform: scale(1.02);
+                box-shadow: 0 6px 16px rgba(201, 169, 97, 0.3);
+            }
         }
 
         /* Carrito Badge */
@@ -129,45 +146,55 @@
             animation: fadeInScale 0.3s ease;
         }
 
-        /* Modal */
+        /* Modal optimizado para móvil */
         .modal-overlay {
             opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
         .modal-overlay.active {
             opacity: 1;
-            pointer-events: all;
+            visibility: visible;
         }
 
         .modal-content {
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateY(100%);
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .modal-overlay.active .modal-content {
             transform: translateY(0);
-            opacity: 1;
         }
 
-        /* Scrollbar personalizado */
-        ::-webkit-scrollbar {
-            width: 8px;
+        /* Scrollbar personalizado - solo desktop */
+        @media (min-width: 768px) {
+            ::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: #1A1A1A;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: #8B2635;
+                border-radius: 4px;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #C9A961;
+            }
         }
 
-        ::-webkit-scrollbar-track {
-            background: #1A1A1A;
+        /* Ocultar scrollbar en mobile para mejor UX */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: #8B2635;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #C9A961;
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
         /* Pattern background */
@@ -177,41 +204,188 @@
                 radial-gradient(circle at 80% 80%, rgba(201, 169, 97, 0.05) 0%, transparent 50%);
         }
 
-        /* Glassmorphism */
+        /* Glassmorphism optimizado */
         .glass {
-            background: rgba(45, 45, 45, 0.6);
-            backdrop-filter: blur(10px);
+            background: rgba(45, 45, 45, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Número input personalizado */
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
+        /* Safe area para móviles con notch */
+        @supports (padding: max(0px)) {
+            .safe-top {
+                padding-top: max(1rem, env(safe-area-inset-top));
+            }
+
+            .safe-bottom {
+                padding-bottom: max(1rem, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* Mejoras para inputs en móvil */
+        input[type="number"] {
+            font-size: 16px;
+            /* Previene zoom en iOS */
+        }
+
+        /* Optimización de imágenes */
+        img {
+            -webkit-user-drag: none;
+            user-select: none;
+        }
+
+        /* Botón flotante del carrito en móvil */
+        .floating-cart {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            z-index: 45;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .floating-cart.hidden-scroll {
+            transform: translateY(100px);
+            opacity: 0;
+        }
+
+        @media (min-width: 768px) {
+            .floating-cart {
+                display: none;
+            }
+        }
+
+        /* Snap scroll para categorías en móvil */
+        .category-scroll {
+            scroll-snap-type: x mandatory;
+            scroll-padding: 1rem;
+            position: relative;
+        }
+
+        .category-scroll>* {
+            scroll-snap-align: start;
+        }
+
+        /* Indicador de scroll horizontal */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(to right,
+                    transparent 0%,
+                    transparent 10%,
+                    #8B2635 50%,
+                    transparent 90%,
+                    transparent 100%);
+            opacity: 0.6;
+            pointer-events: none;
+            animation: slideIndicator 2s ease-in-out infinite;
+        }
+
+        @keyframes slideIndicator {
+
+            0%,
+            100% {
+                transform: translateX(-20%);
+                opacity: 0.4;
+            }
+
+            50% {
+                transform: translateX(20%);
+                opacity: 0.8;
+            }
+        }
+
+        /* Gradientes de fade en los bordes */
+        .category-scroll::before,
+        .category-scroll::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .category-scroll::before {
+            left: 0;
+            background: linear-gradient(to right, rgba(45, 45, 45, 0.95), transparent);
+        }
+
+        .category-scroll::after {
+            right: 0;
+            background: linear-gradient(to left, rgba(45, 45, 45, 0.95), transparent);
+        }
+
+        .category-scroll.show-left-fade::before {
             opacity: 1;
+        }
+
+        .category-scroll.show-right-fade::after {
+            opacity: 1;
+        }
+
+        /* Ocultar indicador cuando no hay scroll disponible */
+        .category-scroll.no-scroll .scroll-indicator {
+            display: none;
+        }
+
+        /* Loading skeleton */
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .loading-skeleton {
+            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Mejora de touch target size para móvil */
+        @media (max-width: 768px) {
+            .touch-target {
+                min-height: 44px;
+                min-width: 44px;
+            }
         }
     </style>
 </head>
 
 <body class="font-sans text-cream antialiased">
 
-    <!-- Header Fixed -->
-    <header class="fixed top-0 left-0 right-0 z-50 glass">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <!-- Logo -->
-                <div class="flex items-center gap-3">
+    <!-- Header Fixed con safe area -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass safe-top">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <!-- Logo - Optimizado para móvil -->
+                <div class="flex items-center gap-2 sm:gap-3">
                     <div
-                        class="w-12 h-12 bg-gradient-to-br from-wine to-wine-dark rounded-full flex items-center justify-center">
-                        <span class="material-symbols-outlined text-gold text-2xl">wine_bar</span>
+                        class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-wine to-wine-dark rounded-full flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-gold text-xl sm:text-2xl">wine_bar</span>
                     </div>
                     <div>
-                        <h1 class="font-serif text-2xl text-gold font-bold tracking-wide">Bebidas y Snacks a Domicilio
+                        <h1
+                            class="font-serif text-base sm:text-xl md:text-2xl text-gold font-bold tracking-wide leading-tight">
+                            <span class="hidden sm:inline">Bebidas y Snacks a Domicilio</span>
+                            <span class="sm:hidden">Bebidas & Snacks</span>
                         </h1>
                     </div>
                 </div>
 
-                <!-- Cart Button -->
-                <button id="cartBtn" class="relative p-3 rounded-full hover:bg-white/10 transition-colors">
+                <!-- Cart Button - Solo desktop -->
+                <button id="cartBtn"
+                    class="hidden md:flex relative p-3 rounded-full hover:bg-white/10 transition-colors touch-target">
                     <span class="material-symbols-outlined text-gold text-3xl">shopping_bag</span>
                     <span id="cartCount"
                         class="cart-badge absolute -top-1 -right-1 bg-wine text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center hidden">0</span>
@@ -220,100 +394,121 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="pt-32 pb-16 px-4 sm:px-6 lg:px-8 pattern-bg">
+    <!-- Botón flotante del carrito - Solo móvil -->
+    <button id="floatingCartBtn" class="floating-cart md:hidden glass rounded-full p-4 shadow-2xl touch-target">
+        <span class="material-symbols-outlined text-gold text-3xl">shopping_bag</span>
+        <span id="floatingCartCount"
+            class="cart-badge absolute -top-2 -right-2 bg-wine text-white text-xs font-bold min-w-[24px] h-6 px-1.5 rounded-full flex items-center justify-center hidden">0</span>
+    </button>
+
+    <!-- Hero Section - Optimizado para móvil -->
+    <section class="pt-20 sm:pt-28 md:pt-32 pb-8 sm:pb-12 md:pb-16 px-3 sm:px-6 lg:px-8 pattern-bg">
         <div class="max-w-7xl mx-auto text-center">
-            <h2 class="font-serif text-5xl sm:text-6xl lg:text-7xl text-gold mb-6 animate-slide-in-left"
-                style="animation-delay: 0.2s;">
+            <h2 class="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-gold mb-3 sm:mb-6 animate-slide-in-left leading-tight"
+                style="animation-delay: 0.1s;">
                 Calidad Certificada
             </h2>
-            <p class="text-lg sm:text-xl text-cream/80 max-w-2xl mx-auto mb-8 animate-slide-in-right"
-                style="animation-delay: 0.4s;">
+            <p class="text-sm sm:text-lg md:text-xl text-cream/80 max-w-2xl mx-auto mb-4 sm:mb-8 px-4 animate-slide-in-right"
+                style="animation-delay: 0.2s;">
                 Encuentra las mejores marcas de licores y acompañantes en un solo lugar.
             </p>
-            <div class="flex items-center justify-center gap-4 animate-fade-in-scale" style="animation-delay: 0.6s;">
-                <div class="h-px w-20 bg-gradient-to-r from-transparent via-gold to-transparent"></div>
-                <span class="material-symbols-outlined text-gold">star</span>
-                <div class="h-px w-20 bg-gradient-to-r from-transparent via-gold to-transparent"></div>
+            <div class="flex items-center justify-center gap-3 sm:gap-4 animate-fade-in-scale"
+                style="animation-delay: 0.3s;">
+                <div class="h-px w-12 sm:w-20 bg-gradient-to-r from-transparent via-gold to-transparent"></div>
+                <span class="material-symbols-outlined text-gold text-xl sm:text-2xl">star</span>
+                <div class="h-px w-12 sm:w-20 bg-gradient-to-r from-transparent via-gold to-transparent"></div>
             </div>
         </div>
     </section>
 
-    <!-- Categorías Tabs -->
-    <section class="sticky top-20 z-40 glass mb-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex gap-4 overflow-x-auto py-4 no-scrollbar">
-                <button class="category-tab active px-6 py-3 rounded-full whitespace-nowrap font-medium transition-all"
-                    data-category="all">
-                    Todo
-                </button>
-                <button class="category-tab px-6 py-3 rounded-full whitespace-nowrap font-medium transition-all"
-                    data-category="vinos">
-                    Vinos
-                </button>
-                <button class="category-tab px-6 py-3 rounded-full whitespace-nowrap font-medium transition-all"
-                    data-category="cervezas">
-                    Cervezas
-                </button>
-                <button class="category-tab px-6 py-3 rounded-full whitespace-nowrap font-medium transition-all"
-                    data-category="licores">
-                    Licores
-                </button>
-                <button class="category-tab px-6 py-3 rounded-full whitespace-nowrap font-medium transition-all"
-                    data-category="hidratacion">
-                    Hidratación
-                </button>
-                <button class="category-tab px-6 py-3 rounded-full whitespace-nowrap font-medium transition-all"
-                    data-category="smirnoff">
-                    Smirnoff
-                </button>
-                <button class="category-tab px-6 py-3 rounded-full whitespace-nowrap font-medium transition-all"
-                    data-category="snacks">
-                    Snacks
-                </button>
+    <!-- Categorías Tabs - Optimizado para móvil con snap scroll -->
+    <section class="sticky top-16 sm:top-20 z-40 glass mb-6 sm:mb-12">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="relative">
+                <div id="categoryScroll"
+                    class="category-scroll flex gap-2 sm:gap-4 overflow-x-auto py-3 sm:py-4 no-scrollbar">
+                    <button
+                        class="category-tab active px-4 sm:px-6 py-2 sm:py-3 rounded-full whitespace-nowrap font-medium transition-all text-sm sm:text-base flex-shrink-0 touch-target"
+                        data-category="all">
+                        Todo
+                    </button>
+                    <button
+                        class="category-tab px-4 sm:px-6 py-2 sm:py-3 rounded-full whitespace-nowrap font-medium transition-all text-sm sm:text-base flex-shrink-0 touch-target"
+                        data-category="vinos">
+                        Vinos
+                    </button>
+                    <button
+                        class="category-tab px-4 sm:px-6 py-2 sm:py-3 rounded-full whitespace-nowrap font-medium transition-all text-sm sm:text-base flex-shrink-0 touch-target"
+                        data-category="cervezas">
+                        Cervezas
+                    </button>
+                    <button
+                        class="category-tab px-4 sm:px-6 py-2 sm:py-3 rounded-full whitespace-nowrap font-medium transition-all text-sm sm:text-base flex-shrink-0 touch-target"
+                        data-category="licores">
+                        Licores
+                    </button>
+                    <button
+                        class="category-tab px-4 sm:px-6 py-2 sm:py-3 rounded-full whitespace-nowrap font-medium transition-all text-sm sm:text-base flex-shrink-0 touch-target"
+                        data-category="hidratacion">
+                        Hidratación
+                    </button>
+                    <button
+                        class="category-tab px-4 sm:px-6 py-2 sm:py-3 rounded-full whitespace-nowrap font-medium transition-all text-sm sm:text-base flex-shrink-0 touch-target"
+                        data-category="smirnoff">
+                        Smirnoff
+                    </button>
+                    <button
+                        class="category-tab px-4 sm:px-6 py-2 sm:py-3 rounded-full whitespace-nowrap font-medium transition-all text-sm sm:text-base flex-shrink-0 touch-target"
+                        data-category="snacks">
+                        Snacks
+                    </button>
+                </div>
+                <!-- Indicador de scroll -->
+                <div class="scroll-indicator"></div>
             </div>
         </div>
     </section>
 
-    <!-- Productos Grid -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-        <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <!-- Productos Grid - Responsive optimizado -->
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pb-24 sm:pb-32">
+        <div id="productsGrid"
+            class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             <!-- Los productos se cargarán dinámicamente -->
         </div>
     </main>
 
-    <!-- Modal Carrito -->
+    <!-- Modal Carrito - Optimizado para móvil -->
     <div id="cartModal"
-        class="modal-overlay fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4">
+        class="modal-overlay fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-end justify-center">
         <div
-            class="modal-content w-full max-w-2xl bg-smoke rounded-t-3xl sm:rounded-3xl max-h-[90vh] overflow-hidden flex flex-col">
+            class="modal-content w-full max-w-2xl bg-smoke rounded-t-3xl sm:rounded-3xl max-h-[92vh] sm:max-h-[90vh] overflow-hidden flex flex-col safe-bottom">
             <!-- Header -->
-            <div class="p-6 border-b border-white/10">
+            <div class="p-4 sm:p-6 border-b border-white/10 flex-shrink-0">
                 <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-gold text-3xl">shopping_bag</span>
-                        <h3 class="font-serif text-2xl text-gold">Tu Pedido</h3>
+                    <div class="flex items-center gap-2 sm:gap-3">
+                        <span class="material-symbols-outlined text-gold text-2xl sm:text-3xl">shopping_bag</span>
+                        <h3 class="font-serif text-xl sm:text-2xl text-gold">Tu Pedido</h3>
                     </div>
-                    <button id="closeCart" class="p-2 hover:bg-white/10 rounded-full transition-colors">
+                    <button id="closeCart" class="p-2 hover:bg-white/10 rounded-full transition-colors touch-target">
                         <span class="material-symbols-outlined text-cream">close</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Cart Items -->
-            <div id="cartItems" class="flex-1 overflow-y-auto p-6">
+            <!-- Cart Items con scroll optimizado -->
+            <div id="cartItems" class="flex-1 overflow-y-auto p-4 sm:p-6 overscroll-contain">
                 <!-- Items se cargarán dinámicamente -->
             </div>
 
-            <!-- Footer -->
-            <div class="p-6 border-t border-white/10 bg-charcoal">
-                <div class="flex items-center justify-between mb-4">
-                    <span class="text-cream/80 text-lg">Total:</span>
-                    <span id="cartTotal" class="font-serif text-3xl text-gold font-bold">$0</span>
+            <!-- Footer con safe area -->
+            <div class="p-4 sm:p-6 border-t border-white/10 bg-charcoal flex-shrink-0">
+                <div class="flex items-center justify-between mb-3 sm:mb-4">
+                    <span class="text-cream/80 text-base sm:text-lg">Total:</span>
+                    <span id="cartTotal" class="font-serif text-2xl sm:text-3xl text-gold font-bold">$0</span>
                 </div>
                 <button id="checkoutBtn"
-                    class="w-full btn-primary bg-gradient-to-r from-wine to-wine-dark text-cream py-4 rounded-full font-semibold flex items-center justify-center gap-2">
-                    <span class="material-symbols-outlined">send</span>
+                    class="w-full btn-primary bg-gradient-to-r from-wine to-wine-dark text-cream py-3.5 sm:py-4 rounded-full font-semibold flex items-center justify-center gap-2 text-sm sm:text-base touch-target">
+                    <span class="material-symbols-outlined text-xl sm:text-2xl">send</span>
                     Realizar Pedido por WhatsApp
                 </button>
             </div>
@@ -381,7 +576,7 @@
                 descripcion: "Cerveza tradicional de Colombia.",
                 imagen: "imagenes/cerveza-aguila.jpg"
             },
-            // LICORES (Aguardiente, Ron, Whisky, Tequila)
+            // LICORES
             {
                 id: 5,
                 nombre: "Aguardiente Antioqueño",
@@ -494,8 +689,11 @@
         // Estado del carrito
         let carrito = [];
 
-        // Número de WhatsApp (cambiar por el real)
-        const whatsappNumber = "573001234567"; // Formato: código país + número
+        // Número de WhatsApp
+        const whatsappNumber = "573001234567";
+
+        // Detectar si es móvil
+        const isMobile = window.innerWidth < 768;
 
         // Formatear precio
         function formatPrice(price) {
@@ -506,36 +704,51 @@
             }).format(price);
         }
 
-        // Renderizar productos
+        // Renderizar productos con diseño responsive
         function renderProducts(category = 'all') {
             const grid = document.getElementById('productsGrid');
             const filtered = category === 'all'
                 ? productos
                 : productos.filter(p => p.categoria === category);
 
-            grid.innerHTML = filtered.map(producto => `
-                <div class="card-hover bg-smoke rounded-2xl overflow-hidden border border-white/10" data-category="${producto.categoria}">
-                    <div class="relative h-48 overflow-hidden bg-charcoal">
-                        <img src="${producto.imagen}" alt="${producto.nombre}" class="w-full h-full object-cover opacity-90">
+            grid.innerHTML = filtered.map((producto, index) => `
+                <div class="card-hover bg-smoke rounded-xl sm:rounded-2xl overflow-hidden border border-white/10 animate-slide-up" 
+                     data-category="${producto.categoria}"
+                     style="animation-delay: ${index * 0.05}s;">
+                    <div class="relative h-32 sm:h-40 md:h-48 overflow-hidden bg-charcoal">
+                        <img src="${producto.imagen}" 
+                             alt="${producto.nombre}" 
+                             class="w-full h-full object-cover opacity-90"
+                             loading="lazy">
                         <div class="absolute inset-0 bg-gradient-to-t from-smoke via-transparent to-transparent"></div>
                     </div>
-                    <div class="p-5">
-                        <span class="inline-block px-3 py-1 bg-wine/20 text-gold text-xs font-semibold rounded-full mb-3 uppercase tracking-wider">
+                    <div class="p-3 sm:p-4 md:p-5">
+                        <span class="inline-block px-2 sm:px-3 py-0.5 sm:py-1 bg-wine/20 text-gold text-[10px] sm:text-xs font-semibold rounded-full mb-2 sm:mb-3 uppercase tracking-wider">
                             ${producto.categoria}
                         </span>
-                        <h3 class="font-serif text-xl text-cream font-semibold mb-2">${producto.nombre}</h3>
-                        <p class="text-cream/60 text-sm mb-4 line-clamp-2">${producto.descripcion}</p>
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="font-serif text-2xl text-gold font-bold">${formatPrice(producto.precio)}</span>
+                        <h3 class="font-serif text-sm sm:text-base md:text-xl text-cream font-semibold mb-1 sm:mb-2 line-clamp-2 leading-snug">
+                            ${producto.nombre}
+                        </h3>
+                        <p class="text-cream/60 text-xs sm:text-sm mb-2 sm:mb-4 line-clamp-2 hidden sm:block">
+                            ${producto.descripcion}
+                        </p>
+                        <div class="flex items-center justify-between mb-2 sm:mb-4">
+                            <span class="font-serif text-lg sm:text-xl md:text-2xl text-gold font-bold">
+                                ${formatPrice(producto.precio)}
+                            </span>
                         </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <button onclick="addToCart(${producto.id})" class="btn-primary bg-wine hover:bg-wine-dark text-cream py-3 rounded-xl font-medium flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined text-sm">shopping_cart</span>
-                                Carrito
+                        <div class="grid grid-cols-2 gap-1.5 sm:gap-2">
+                            <button onclick="addToCart(${producto.id})" 
+                                    class="btn-primary bg-wine hover:bg-wine-dark text-cream py-2 sm:py-2.5 md:py-3 rounded-lg sm:rounded-xl font-medium flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm touch-target">
+                                <span class="material-symbols-outlined text-base sm:text-lg">shopping_cart</span>
+                                <span class="hidden sm:inline">Carrito</span>
+                                <span class="sm:hidden">+</span>
                             </button>
-                            <button onclick="orderDirect(${producto.id})" class="bg-charcoal hover:bg-gold/20 text-gold border border-gold/30 py-3 rounded-xl font-medium flex items-center justify-center gap-2 transition-all">
-                                <span class="material-symbols-outlined text-sm">send</span>
-                                Pedir
+                            <button onclick="orderDirect(${producto.id})" 
+                                    class="bg-charcoal hover:bg-gold/20 text-gold border border-gold/30 py-2 sm:py-2.5 md:py-3 rounded-lg sm:rounded-xl font-medium flex items-center justify-center gap-1 sm:gap-2 transition-all text-xs sm:text-sm touch-target">
+                                <span class="material-symbols-outlined text-base sm:text-lg">send</span>
+                                <span class="hidden sm:inline">Pedir</span>
+                                <span class="sm:hidden">WA</span>
                             </button>
                         </div>
                     </div>
@@ -543,7 +756,7 @@
             `).join('');
         }
 
-        // Agregar al carrito
+        // Agregar al carrito con feedback
         function addToCart(productId) {
             const producto = productos.find(p => p.id === productId);
             const existente = carrito.find(item => item.id === productId);
@@ -555,34 +768,43 @@
             }
 
             updateCart();
-            showNotification('Producto agregado al carrito');
+            showNotification('✓ Agregado al carrito');
+
+            // Vibración en móvil (si está disponible)
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
         }
 
         // Actualizar carrito
         function updateCart() {
             const count = carrito.reduce((acc, item) => acc + item.cantidad, 0);
             const countBadge = document.getElementById('cartCount');
+            const floatingCountBadge = document.getElementById('floatingCartCount');
 
             if (count > 0) {
                 countBadge.textContent = count;
                 countBadge.classList.remove('hidden');
+                floatingCountBadge.textContent = count;
+                floatingCountBadge.classList.remove('hidden');
             } else {
                 countBadge.classList.add('hidden');
+                floatingCountBadge.classList.add('hidden');
             }
 
             renderCart();
         }
 
-        // Renderizar carrito
+        // Renderizar carrito optimizado para móvil
         function renderCart() {
             const cartItems = document.getElementById('cartItems');
             const cartTotal = document.getElementById('cartTotal');
 
             if (carrito.length === 0) {
                 cartItems.innerHTML = `
-                    <div class="text-center py-12">
-                        <span class="material-symbols-outlined text-gold text-6xl mb-4 block opacity-50">shopping_bag</span>
-                        <p class="text-cream/60">Tu carrito está vacío</p>
+                    <div class="text-center py-8 sm:py-12">
+                        <span class="material-symbols-outlined text-gold text-5xl sm:text-6xl mb-3 sm:mb-4 block opacity-50">shopping_bag</span>
+                        <p class="text-cream/60 text-sm sm:text-base">Tu carrito está vacío</p>
                     </div>
                 `;
                 cartTotal.textContent = formatPrice(0);
@@ -592,23 +814,29 @@
             const total = carrito.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
 
             cartItems.innerHTML = carrito.map(item => `
-                <div class="flex gap-4 mb-4 p-4 bg-charcoal rounded-xl border border-white/10">
-                    <img src="${item.imagen}" alt="${item.nombre}" class="w-20 h-20 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <h4 class="text-cream font-semibold mb-1">${item.nombre}</h4>
-                        <p class="text-gold font-serif text-lg">${formatPrice(item.precio)}</p>
+                <div class="flex gap-3 sm:gap-4 mb-3 sm:mb-4 p-3 sm:p-4 bg-charcoal rounded-xl border border-white/10">
+                    <img src="${item.imagen}" 
+                         alt="${item.nombre}" 
+                         class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg flex-shrink-0"
+                         loading="lazy">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-cream font-semibold mb-1 text-sm sm:text-base truncate">${item.nombre}</h4>
+                        <p class="text-gold font-serif text-base sm:text-lg">${formatPrice(item.precio)}</p>
                     </div>
-                    <div class="flex flex-col items-end justify-between">
-                        <button onclick="removeFromCart(${item.id})" class="text-cream/60 hover:text-wine transition-colors">
-                            <span class="material-symbols-outlined">close</span>
+                    <div class="flex flex-col items-end justify-between flex-shrink-0">
+                        <button onclick="removeFromCart(${item.id})" 
+                                class="text-cream/60 hover:text-wine transition-colors p-1 touch-target">
+                            <span class="material-symbols-outlined text-xl">close</span>
                         </button>
-                        <div class="flex items-center gap-2 bg-smoke rounded-lg">
-                            <button onclick="decreaseQuantity(${item.id})" class="px-3 py-1 hover:text-gold transition-colors">
-                                <span class="material-symbols-outlined text-sm">remove</span>
+                        <div class="flex items-center gap-1 sm:gap-2 bg-smoke rounded-lg">
+                            <button onclick="decreaseQuantity(${item.id})" 
+                                    class="px-2 sm:px-3 py-1 hover:text-gold transition-colors touch-target">
+                                <span class="material-symbols-outlined text-base sm:text-lg">remove</span>
                             </button>
-                            <span class="text-cream font-semibold w-8 text-center">${item.cantidad}</span>
-                            <button onclick="increaseQuantity(${item.id})" class="px-3 py-1 hover:text-gold transition-colors">
-                                <span class="material-symbols-outlined text-sm">add</span>
+                            <span class="text-cream font-semibold w-6 sm:w-8 text-center text-sm sm:text-base">${item.cantidad}</span>
+                            <button onclick="increaseQuantity(${item.id})" 
+                                    class="px-2 sm:px-3 py-1 hover:text-gold transition-colors touch-target">
+                                <span class="material-symbols-outlined text-base sm:text-lg">add</span>
                             </button>
                         </div>
                     </div>
@@ -638,6 +866,7 @@
         function removeFromCart(productId) {
             carrito = carrito.filter(item => item.id !== productId);
             updateCart();
+            showNotification('Producto eliminado');
         }
 
         // Pedido directo por WhatsApp
@@ -669,16 +898,12 @@
 
             const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(mensaje)}`;
             window.open(url, '_blank');
-
-            // Opcional: limpiar carrito después de enviar
-            // carrito = [];
-            // updateCart();
-            // closeCartModal();
         });
 
         // Modal del carrito
         const cartModal = document.getElementById('cartModal');
         const cartBtn = document.getElementById('cartBtn');
+        const floatingCartBtn = document.getElementById('floatingCartBtn');
         const closeCart = document.getElementById('closeCart');
 
         function openCartModal() {
@@ -691,13 +916,22 @@
             document.body.style.overflow = '';
         }
 
-        cartBtn.addEventListener('click', openCartModal);
+        cartBtn?.addEventListener('click', openCartModal);
+        floatingCartBtn?.addEventListener('click', openCartModal);
         closeCart.addEventListener('click', closeCartModal);
+
         cartModal.addEventListener('click', (e) => {
             if (e.target === cartModal) closeCartModal();
         });
 
-        // Categorías
+        // Prevenir scroll del body cuando el modal está abierto
+        cartModal.addEventListener('touchmove', (e) => {
+            if (e.target === cartModal) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // Categorías con smooth scroll
         document.querySelectorAll('.category-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.category-tab').forEach(t => {
@@ -710,6 +944,12 @@
 
                 const category = tab.dataset.category;
                 renderProducts(category);
+
+                // Scroll suave al inicio de productos
+                document.getElementById('productsGrid').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
             });
         });
 
@@ -722,21 +962,126 @@
             }
         });
 
-        // Notificaciones
+        // Notificaciones optimizadas para móvil
         function showNotification(message) {
             const notification = document.createElement('div');
-            notification.className = 'fixed bottom-4 right-4 bg-wine text-cream px-6 py-3 rounded-full shadow-lg z-50 animate-fade-in-scale';
+            notification.className = 'fixed top-20 sm:top-24 left-1/2 -translate-x-1/2 bg-wine text-cream px-4 sm:px-6 py-2 sm:py-3 rounded-full shadow-lg z-50 animate-fade-in-scale text-sm sm:text-base';
             notification.textContent = message;
             document.body.appendChild(notification);
 
             setTimeout(() => {
                 notification.style.opacity = '0';
+                notification.style.transform = 'translate(-50%, -20px)';
                 setTimeout(() => notification.remove(), 300);
             }, 2000);
         }
 
+        // Ocultar botón flotante al hacer scroll hacia abajo (solo móvil)
+        let lastScrollTop = 0;
+        let scrollTimeout;
+
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth >= 768) return;
+
+            clearTimeout(scrollTimeout);
+
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const floatingCart = document.getElementById('floatingCartBtn');
+
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scrolling down
+                floatingCart.classList.add('hidden-scroll');
+            } else {
+                // Scrolling up
+                floatingCart.classList.remove('hidden-scroll');
+            }
+
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+            // Mostrar el botón después de que el usuario deje de hacer scroll
+            scrollTimeout = setTimeout(() => {
+                floatingCart.classList.remove('hidden-scroll');
+            }, 1000);
+        }, { passive: true });
+
+        // Prevenir zoom en double tap (iOS)
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (e) => {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
+
         // Inicializar
         renderProducts();
+
+        // Manejo del indicador de scroll en categorías
+        const categoryScroll = document.getElementById('categoryScroll');
+
+        function updateScrollIndicators() {
+            const scrollLeft = categoryScroll.scrollLeft;
+            const scrollWidth = categoryScroll.scrollWidth;
+            const clientWidth = categoryScroll.clientWidth;
+            const maxScroll = scrollWidth - clientWidth;
+
+            // Si no hay scroll disponible
+            if (maxScroll <= 0) {
+                categoryScroll.classList.add('no-scroll');
+                categoryScroll.classList.remove('show-left-fade', 'show-right-fade');
+                return;
+            }
+
+            categoryScroll.classList.remove('no-scroll');
+
+            // Mostrar fade izquierdo si no está al inicio
+            if (scrollLeft > 20) {
+                categoryScroll.classList.add('show-left-fade');
+            } else {
+                categoryScroll.classList.remove('show-left-fade');
+            }
+
+            // Mostrar fade derecho si no está al final
+            if (scrollLeft < maxScroll - 20) {
+                categoryScroll.classList.add('show-right-fade');
+            } else {
+                categoryScroll.classList.remove('show-right-fade');
+            }
+        }
+
+        // Actualizar indicadores al hacer scroll
+        categoryScroll.addEventListener('scroll', updateScrollIndicators, { passive: true });
+
+        // Actualizar al cargar y redimensionar
+        window.addEventListener('load', updateScrollIndicators);
+        window.addEventListener('resize', updateScrollIndicators);
+
+        // Inicializar indicadores
+        setTimeout(updateScrollIndicators, 100);
+
+        // Performance: Usar Intersection Observer para lazy load de imágenes
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src || img.src;
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+
+            // Observar imágenes cuando se rendericen
+            const observeImages = () => {
+                document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            };
+
+            // Llamar después de renderizar
+            setTimeout(observeImages, 100);
+        }
     </script>
 </body>
 
