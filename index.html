@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Vinoteca Premium | Bebidas & Snacks</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "wine": "#8B2635",
+                        "wine-dark": "#5C1A23",
+                        "gold": "#C9A961",
+                        "cream": "#F5F1E8",
+                        "charcoal": "#1A1A1A",
+                        "smoke": "#2D2D2D"
+                    },
+                    fontFamily: {
+                        "serif": ["'Cormorant Garamond'", "serif"],
+                        "sans": ["Montserrat", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
+        }
+
+        /* Animaciones */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shimmer {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        .animate-slide-in-left {
+            animation: slideInLeft 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+
+        .animate-slide-in-right {
+            animation: slideInRight 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+
+        .animate-fade-in-scale {
+            animation: fadeInScale 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(139, 38, 53, 0.3);
+        }
+
+        .btn-primary {
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(201, 169, 97, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        /* Carrito Badge */
+        .cart-badge {
+            animation: fadeInScale 0.3s ease;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Scrollbar personalizado */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1A1A1A;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #8B2635;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C9A961;
+        }
+
+        /* Pattern background */
+        .pattern-bg {
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(139, 38, 53, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(201, 169, 97, 0.05) 0%, transparent 50%);
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(45, 45, 45, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Número input personalizado */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="font-sans text-cream antialiased">
+
+    <!-- Header Fixed -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-br from-wine to-wine-dark rounded-full flex items-center justify-center">
+                        <span class="material-symbols-outlined text-gold text-2xl">wine_bar</span>
+                    </div>
+                    <div>
+                        <h1 class="font-serif text-2xl text-gold font-bold tracking-wide">Bebidas y Snacks a Domicilio
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Cart Button -->
+                <button id="cartBtn" class="relative p-3 rounded-full hover:bg-white/10 transition-colors">
+                    <span class="material-symbols-outlined text-gold text-3xl">shopping_bag</span>
+                    <span id="cartCount"
+                        class="cart-badge absolute -top-1 -right-1 bg-wine text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center hidden">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-16 px-4 sm:px-6 lg:px-8 pattern-bg">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="font-serif text-5xl sm:text-6xl lg:text-7xl text-gold mb-6 animate-slide-in-left"
+                style="animation-delay: 0.2s;">
+                Calidad Certificada
+            </h2>
+            <p class="text-lg sm:text-xl text-cream/80 max-w-2xl mx-auto mb-8 animate-slide-in-right"
+                style="animation-delay: 0.4s;">
+                Encuentra las mejores marcas de licores y acompañantes en un solo lugar.
+            </p>
+            <div class="flex items-center justify-center gap-4 animate-fade-in-scale" style="animation-delay: 0.6s;">
+                <div class="h-px w-20 bg-gradient-to-r from-transparent via-gold to-transparent"></div>
+                <span class="material-symbols-outlined text-gold">star</span>
+                <div class="h-px w-20 bg-gradient-to-r from-transparent via-gold to-transparent"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categorías Tabs -->
+    <section class="sticky top-20 z-40 glass mb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex gap-4 overflow-x-auto py-4 no-scrollbar">
+                <button class="category-tab active px-6 py-3 rounded-full whitespace-nowrap font-medium transition-all"
+                    data-category="all">
+                    Todo
+                </button>
+                <button class="category-tab px-6 py-3 rounded-full whitespace-nowrap font-medium transition-all"
+                    data-category="vinos">
+                    Vinos
+                </button>
+                <button class="category-tab px-6 py-3 rounded-full whitespace-nowrap font-medium transition-all"
+                    data-category="cervezas">
+                    Cervezas
+                </button>
+                <button class="category-tab px-6 py-3 rounded-full whitespace-nowrap font-medium transition-all"
+                    data-category="licores">
+                    Licores
+                </button>
+                <button class="category-tab px-6 py-3 rounded-full whitespace-nowrap font-medium transition-all"
+                    data-category="hidratacion">
+                    Hidratación
+                </button>
+                <button class="category-tab px-6 py-3 rounded-full whitespace-nowrap font-medium transition-all"
+                    data-category="smirnoff">
+                    Smirnoff
+                </button>
+                <button class="category-tab px-6 py-3 rounded-full whitespace-nowrap font-medium transition-all"
+                    data-category="snacks">
+                    Snacks
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Productos Grid -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+        <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Los productos se cargarán dinámicamente -->
+        </div>
+    </main>
+
+    <!-- Modal Carrito -->
+    <div id="cartModal"
+        class="modal-overlay fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4">
+        <div
+            class="modal-content w-full max-w-2xl bg-smoke rounded-t-3xl sm:rounded-3xl max-h-[90vh] overflow-hidden flex flex-col">
+            <!-- Header -->
+            <div class="p-6 border-b border-white/10">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-gold text-3xl">shopping_bag</span>
+                        <h3 class="font-serif text-2xl text-gold">Tu Pedido</h3>
+                    </div>
+                    <button id="closeCart" class="p-2 hover:bg-white/10 rounded-full transition-colors">
+                        <span class="material-symbols-outlined text-cream">close</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cart Items -->
+            <div id="cartItems" class="flex-1 overflow-y-auto p-6">
+                <!-- Items se cargarán dinámicamente -->
+            </div>
+
+            <!-- Footer -->
+            <div class="p-6 border-t border-white/10 bg-charcoal">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-cream/80 text-lg">Total:</span>
+                    <span id="cartTotal" class="font-serif text-3xl text-gold font-bold">$0</span>
+                </div>
+                <button id="checkoutBtn"
+                    class="w-full btn-primary bg-gradient-to-r from-wine to-wine-dark text-cream py-4 rounded-full font-semibold flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined">send</span>
+                    Realizar Pedido por WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datos de productos
+        const productos = [
+            // VINOS
+            {
+                id: 18,
+                nombre: "Vino Tinto Gato Negro",
+                categoria: "vinos",
+                precio: 35000,
+                descripcion: "Vino tinto suave con notas frutales.",
+                imagen: "imagenes/vino-tinto-gato-negro.jpg"
+            },
+            {
+                id: 19,
+                nombre: "Vino Blanco Casillero del Diablo",
+                categoria: "vinos",
+                precio: 45000,
+                descripcion: "Vino blanco fresco y equilibrado.",
+                imagen: "imagenes/vino-blanco-casillero-del-diablo.jpg"
+            },
+            {
+                id: 20,
+                nombre: "Vino Rosado JP Chenet",
+                categoria: "vinos",
+                precio: 42000,
+                descripcion: "Vino rosado dulce y aromático.",
+                imagen: "imagenes/vino-rosado-jp-chenet.jpg"
+            },
+            // CERVEZAS
+            {
+                id: 1,
+                nombre: "Corona",
+                categoria: "cervezas",
+                precio: 8000,
+                descripcion: "Cerveza tipo lager, ligera y refrescante.",
+                imagen: "imagenes/cerveza-corona.png"
+            },
+            {
+                id: 2,
+                nombre: "Club Colombia Dorada",
+                categoria: "cervezas",
+                precio: 5000,
+                descripcion: "Cerveza premium tipo lager dorada.",
+                imagen: "imagenes/cerveza-club-colombia-dorada.jpg"
+            },
+            {
+                id: 3,
+                nombre: "Heineken",
+                categoria: "cervezas",
+                precio: 9000,
+                descripcion: "Cerveza lager de renombre internacional.",
+                imagen: "imagenes/cerveza-heineken.jpg"
+            },
+            {
+                id: 4,
+                nombre: "Águila Original",
+                categoria: "cervezas",
+                precio: 4500,
+                descripcion: "Cerveza tradicional de Colombia.",
+                imagen: "imagenes/cerveza-aguila.jpg"
+            },
+            // LICORES (Aguardiente, Ron, Whisky, Tequila)
+            {
+                id: 5,
+                nombre: "Aguardiente Antioqueño",
+                categoria: "licores",
+                precio: 50000,
+                descripcion: "Aguardiente tradicional sin azúcar, tapa azul.",
+                imagen: "imagenes/aguardiente-antioqueno.jpg"
+            },
+            {
+                id: 6,
+                nombre: "Ron Medellín 3 Años",
+                categoria: "licores",
+                precio: 48000,
+                descripcion: "Ron añejo tradicional de 3 años.",
+                imagen: "imagenes/ron-medellin-3-anos.jpg"
+            },
+            {
+                id: 7,
+                nombre: "Buchanan's 12",
+                categoria: "licores",
+                precio: 160000,
+                descripcion: "Whisky escocés deluxe de 12 años.",
+                imagen: "imagenes/whisky-buchanans-12.jpg"
+            },
+            {
+                id: 8,
+                nombre: "Tequila Jose Cuervo",
+                categoria: "licores",
+                precio: 95000,
+                descripcion: "Tequila reposado especial.",
+                imagen: "imagenes/tequila-jose-cuervo.jpg"
+            },
+            // HIDRATACIÓN
+            {
+                id: 9,
+                nombre: "Gatorade Azul",
+                categoria: "hidratacion",
+                precio: 5000,
+                descripcion: "Bebida hidratante para deportistas.",
+                imagen: "imagenes/gatorade-azul.jpg"
+            },
+            {
+                id: 10,
+                nombre: "Electrolit",
+                categoria: "hidratacion",
+                precio: 8500,
+                descripcion: "Suero rehidratante oral sabor fresa.",
+                imagen: "imagenes/electrolit.jpg"
+            },
+            {
+                id: 11,
+                nombre: "Coca Cola 1.5L",
+                categoria: "hidratacion",
+                precio: 6000,
+                descripcion: "Refresco de cola original, botella familiar.",
+                imagen: "imagenes/coca-cola-1-5l.jpg"
+            },
+            {
+                id: 12,
+                nombre: "Red Bull",
+                categoria: "hidratacion",
+                precio: 9000,
+                descripcion: "Bebida energizante premium.",
+                imagen: "imagenes/red-bull.jpg"
+            },
+            // SMIRNOFF
+            {
+                id: 13,
+                nombre: "Smirnoff Ice Original",
+                categoria: "smirnoff",
+                precio: 12000,
+                descripcion: "Bebida alcohólica mixta base vodka.",
+                imagen: "imagenes/smirnoff-ice-original.jpg"
+            },
+            {
+                id: 14,
+                nombre: "Smirnoff Lulo",
+                categoria: "smirnoff",
+                precio: 12000,
+                descripcion: "Bebida alcohólica con sabor a lulo.",
+                imagen: "imagenes/smirnoff-lulo.jpg"
+            },
+            // SNACKS
+            {
+                id: 15,
+                nombre: "Mini Hamburguesas",
+                categoria: "snacks",
+                precio: 25000,
+                descripcion: "Mini hamburguesas listas.",
+                imagen: "imagenes/mini-hamburguesas.jpeg"
+            },
+            {
+                id: 16,
+                nombre: "Papas Fritas Artesanales",
+                categoria: "snacks",
+                precio: 10000,
+                descripcion: "Papas fritas crujientes y naturales.",
+                imagen: "imagenes/papas-fritas-artesanales.jpg"
+            },
+            {
+                id: 17,
+                nombre: "Platanitos",
+                categoria: "snacks",
+                precio: 8000,
+                descripcion: "Plátanos maduros fritos.",
+                imagen: "imagenes/platanitos.jpg"
+            }
+        ];
+
+        // Estado del carrito
+        let carrito = [];
+
+        // Número de WhatsApp (cambiar por el real)
+        const whatsappNumber = "573001234567"; // Formato: código país + número
+
+        // Formatear precio
+        function formatPrice(price) {
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0
+            }).format(price);
+        }
+
+        // Renderizar productos
+        function renderProducts(category = 'all') {
+            const grid = document.getElementById('productsGrid');
+            const filtered = category === 'all'
+                ? productos
+                : productos.filter(p => p.categoria === category);
+
+            grid.innerHTML = filtered.map(producto => `
+                <div class="card-hover bg-smoke rounded-2xl overflow-hidden border border-white/10" data-category="${producto.categoria}">
+                    <div class="relative h-48 overflow-hidden bg-charcoal">
+                        <img src="${producto.imagen}" alt="${producto.nombre}" class="w-full h-full object-cover opacity-90">
+                        <div class="absolute inset-0 bg-gradient-to-t from-smoke via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-5">
+                        <span class="inline-block px-3 py-1 bg-wine/20 text-gold text-xs font-semibold rounded-full mb-3 uppercase tracking-wider">
+                            ${producto.categoria}
+                        </span>
+                        <h3 class="font-serif text-xl text-cream font-semibold mb-2">${producto.nombre}</h3>
+                        <p class="text-cream/60 text-sm mb-4 line-clamp-2">${producto.descripcion}</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="font-serif text-2xl text-gold font-bold">${formatPrice(producto.precio)}</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="addToCart(${producto.id})" class="btn-primary bg-wine hover:bg-wine-dark text-cream py-3 rounded-xl font-medium flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined text-sm">shopping_cart</span>
+                                Carrito
+                            </button>
+                            <button onclick="orderDirect(${producto.id})" class="bg-charcoal hover:bg-gold/20 text-gold border border-gold/30 py-3 rounded-xl font-medium flex items-center justify-center gap-2 transition-all">
+                                <span class="material-symbols-outlined text-sm">send</span>
+                                Pedir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Agregar al carrito
+        function addToCart(productId) {
+            const producto = productos.find(p => p.id === productId);
+            const existente = carrito.find(item => item.id === productId);
+
+            if (existente) {
+                existente.cantidad++;
+            } else {
+                carrito.push({ ...producto, cantidad: 1 });
+            }
+
+            updateCart();
+            showNotification('Producto agregado al carrito');
+        }
+
+        // Actualizar carrito
+        function updateCart() {
+            const count = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+            const countBadge = document.getElementById('cartCount');
+
+            if (count > 0) {
+                countBadge.textContent = count;
+                countBadge.classList.remove('hidden');
+            } else {
+                countBadge.classList.add('hidden');
+            }
+
+            renderCart();
+        }
+
+        // Renderizar carrito
+        function renderCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+
+            if (carrito.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="text-center py-12">
+                        <span class="material-symbols-outlined text-gold text-6xl mb-4 block opacity-50">shopping_bag</span>
+                        <p class="text-cream/60">Tu carrito está vacío</p>
+                    </div>
+                `;
+                cartTotal.textContent = formatPrice(0);
+                return;
+            }
+
+            const total = carrito.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+
+            cartItems.innerHTML = carrito.map(item => `
+                <div class="flex gap-4 mb-4 p-4 bg-charcoal rounded-xl border border-white/10">
+                    <img src="${item.imagen}" alt="${item.nombre}" class="w-20 h-20 object-cover rounded-lg">
+                    <div class="flex-1">
+                        <h4 class="text-cream font-semibold mb-1">${item.nombre}</h4>
+                        <p class="text-gold font-serif text-lg">${formatPrice(item.precio)}</p>
+                    </div>
+                    <div class="flex flex-col items-end justify-between">
+                        <button onclick="removeFromCart(${item.id})" class="text-cream/60 hover:text-wine transition-colors">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                        <div class="flex items-center gap-2 bg-smoke rounded-lg">
+                            <button onclick="decreaseQuantity(${item.id})" class="px-3 py-1 hover:text-gold transition-colors">
+                                <span class="material-symbols-outlined text-sm">remove</span>
+                            </button>
+                            <span class="text-cream font-semibold w-8 text-center">${item.cantidad}</span>
+                            <button onclick="increaseQuantity(${item.id})" class="px-3 py-1 hover:text-gold transition-colors">
+                                <span class="material-symbols-outlined text-sm">add</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            cartTotal.textContent = formatPrice(total);
+        }
+
+        // Funciones de cantidad
+        function increaseQuantity(productId) {
+            const item = carrito.find(i => i.id === productId);
+            if (item) {
+                item.cantidad++;
+                updateCart();
+            }
+        }
+
+        function decreaseQuantity(productId) {
+            const item = carrito.find(i => i.id === productId);
+            if (item && item.cantidad > 1) {
+                item.cantidad--;
+                updateCart();
+            }
+        }
+
+        function removeFromCart(productId) {
+            carrito = carrito.filter(item => item.id !== productId);
+            updateCart();
+        }
+
+        // Pedido directo por WhatsApp
+        function orderDirect(productId) {
+            const producto = productos.find(p => p.id === productId);
+            const mensaje = `¡Hola! Me interesa el siguiente producto:\n\n📦 *${producto.nombre}*\n💰 ${formatPrice(producto.precio)}\n\n¿Está disponible?`;
+
+            const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+        }
+
+        // Checkout
+        document.getElementById('checkoutBtn').addEventListener('click', () => {
+            if (carrito.length === 0) {
+                showNotification('El carrito está vacío');
+                return;
+            }
+
+            let mensaje = '🛍️ *NUEVO PEDIDO*\n\n';
+
+            carrito.forEach(item => {
+                mensaje += `📦 ${item.nombre}\n`;
+                mensaje += `   ${item.cantidad}x ${formatPrice(item.precio)} = ${formatPrice(item.precio * item.cantidad)}\n\n`;
+            });
+
+            const total = carrito.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+            mensaje += `💰 *TOTAL: ${formatPrice(total)}*\n\n`;
+            mensaje += '¿Podrías confirmar la disponibilidad?';
+
+            const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+
+            // Opcional: limpiar carrito después de enviar
+            // carrito = [];
+            // updateCart();
+            // closeCartModal();
+        });
+
+        // Modal del carrito
+        const cartModal = document.getElementById('cartModal');
+        const cartBtn = document.getElementById('cartBtn');
+        const closeCart = document.getElementById('closeCart');
+
+        function openCartModal() {
+            cartModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCartModal() {
+            cartModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        cartBtn.addEventListener('click', openCartModal);
+        closeCart.addEventListener('click', closeCartModal);
+        cartModal.addEventListener('click', (e) => {
+            if (e.target === cartModal) closeCartModal();
+        });
+
+        // Categorías
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.category-tab').forEach(t => {
+                    t.classList.remove('active', 'bg-wine', 'text-cream');
+                    t.classList.add('text-cream/60', 'hover:bg-white/5');
+                });
+
+                tab.classList.add('active', 'bg-wine', 'text-cream');
+                tab.classList.remove('text-cream/60', 'hover:bg-white/5');
+
+                const category = tab.dataset.category;
+                renderProducts(category);
+            });
+        });
+
+        // Estilo inicial de tabs
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            if (tab.classList.contains('active')) {
+                tab.classList.add('bg-wine', 'text-cream');
+            } else {
+                tab.classList.add('text-cream/60', 'hover:bg-white/5');
+            }
+        });
+
+        // Notificaciones
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-4 right-4 bg-wine text-cream px-6 py-3 rounded-full shadow-lg z-50 animate-fade-in-scale';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+
+        // Inicializar
+        renderProducts();
+    </script>
+</body>
+
+</html>
